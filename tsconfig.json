@@ -16,6 +16,14 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+      "inputGeneral": [
+        "dist/input-general"
+      ],
+      "inputGeneral/*": [
+        "dist/input-general/*"
+      ]
+    }
   }
 }
