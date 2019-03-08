@@ -4,12 +4,21 @@ import { InputGeneralService } from './input-general.service';
 @Component({
   selector: 'lib-inputGeneral',
   template: `
-    <input type="text" [ngStyle]="estilos" />
+    <span [formGroup]="form">
+      <input
+        type="text"
+        [ngStyle]="estilos"
+        [formControlName]="control.key"
+        [id]="control.key"
+        [type]="control.type"
+      />
+    </span>
   `,
   styles: []
 })
 export class InputGeneralComponent implements OnInit {
   @Input() control;
+  @Input() form;
   estilos;
   constructor(private service: InputGeneralService) {}
 

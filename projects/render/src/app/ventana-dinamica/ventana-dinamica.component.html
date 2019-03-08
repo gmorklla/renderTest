@@ -3,7 +3,26 @@
   class="modalContainer"
   style="background-color: azure;"
 >
-  <ng-container *ngFor="let control of controls; let i = index; trackBy: index">
-    <app-container-dinamico [control]="control"></app-container-dinamico>
-  </ng-container>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="form"
+    novalidate
+  >
+    <ng-container *ngFor="let control of controls; let i = index; trackBy: index">
+      <app-container-dinamico
+        [control]="control"
+        [form]="form"
+      ></app-container-dinamico>
+    </ng-container>
+    <button
+      type="submit"
+      [disabled]="!form.valid"
+    >Save</button>
+  </form>
+  <div
+    *ngIf="payLoad"
+    class="form-row"
+  >
+    <strong>Saved the following values</strong><br>{{payLoad}}
+  </div>
 </div>

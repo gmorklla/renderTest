@@ -7,6 +7,8 @@ import {
   Input
 } from '@angular/core';
 import { InputGeneralComponent } from 'projects/input-general/src/public_api';
+import { FormGroup } from '@angular/forms';
+import { InputBase } from '../input-base';
 
 @Component({
   selector: 'app-container-dinamico',
@@ -16,7 +18,8 @@ import { InputGeneralComponent } from 'projects/input-general/src/public_api';
 export class ContainerDinamicoComponent implements OnInit {
   @ViewChild('container', { read: ViewContainerRef })
   container: ViewContainerRef;
-  @Input() control;
+  @Input() control: InputBase<any>;
+  @Input() form: FormGroup;
 
   constructor(private resolver: ComponentFactoryResolver) {}
 
@@ -30,5 +33,6 @@ export class ContainerDinamicoComponent implements OnInit {
     const factory = this.resolver.resolveComponentFactory(componentToRender);
     const componentRef = this.container.createComponent(factory);
     componentRef.instance['control'] = this.control;
+    componentRef.instance['form'] = this.form;
   }
 }
