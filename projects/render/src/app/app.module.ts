@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -9,6 +10,7 @@ import { AppComponent } from './app.component';
 import { VentanaDinamicaComponent } from './ventana-dinamica/ventana-dinamica.component';
 import { InputGeneralModule } from 'projects/input-general/src/public_api';
 import { ContainerDinamicoComponent } from './container-dinamico/container-dinamico.component';
+import { AsyncValService } from './asyncVal.service';
 
 @NgModule({
   declarations: [
@@ -22,9 +24,10 @@ import { ContainerDinamicoComponent } from './container-dinamico/container-dinam
     ReactiveFormsModule,
     MatButtonModule,
     MatDialogModule,
-    InputGeneralModule
+    InputGeneralModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [AsyncValService],
   entryComponents: [VentanaDinamicaComponent, ContainerDinamicoComponent],
   bootstrap: [AppComponent]
 })

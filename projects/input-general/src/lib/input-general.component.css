@@ -1,0 +1,26 @@
+i {
+  position: absolute;
+  transform: translate3d(205px, 106px, 0px);
+}
+
+input {
+  background: aliceblue;
+}
+
+input.ng-valid.ng-touched {
+  border: 1px solid green;
+  background-color: rgb(224, 255, 224);
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid crimson;
+  background-color: rgb(255, 244, 244);
+}
+
+.ng-invalid.ng-touched i {
+  color: crimson;
+}
+
+.ng-valid.ng-touched i {
+  color: green;
+}
