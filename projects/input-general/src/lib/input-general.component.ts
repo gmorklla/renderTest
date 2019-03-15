@@ -1,29 +1,39 @@
+import { FormGroup } from '@angular/forms';
 import { Component, OnInit, Input } from '@angular/core';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  filter,
+  tap
+} from 'rxjs/operators';
+import { of } from 'rxjs';
 import { InputGeneralService } from './input-general.service';
+import { AsyncValService } from './../../../render/src/app/asyncVal.service';
 
 @Component({
   selector: 'lib-inputGeneral',
   template: `
     <span [formGroup]="form">
       <input
-        type="text"
         [ngStyle]="estilos"
-        [formControlName]="control.key"
-        [id]="control.key"
+        [formControlName]="control.name"
+        [id]="control.id"
         [type]="control.type"
       />
-      <i class="far fa-credit-card"></i>
-      <div *ngIf="form.get('email').status === 'PENDING'">
-        Checking...
+      <i class="far fa-envelope"></i>
+      <div *ngIf="form.get(control.name).status === 'PENDING'">
+        Verificando...
       </div>
-      <div *ngIf="form.get('email').status === 'VALID'">
-        😺 Email is available!
+      <div *ngIf="form.get(control.name).status === 'VALID'">
+        😺 Campo válido!
       </div>
 
       <div
-        *ngIf="form.get('email').errors && form.get('email').errors.emailTaken"
+        *ngIf="form.get(control.name).errors && form.get(control.name).touched"
       >
-        😢 Oh noes, this email is already taken!
+        😢
+        {{ form.get(control.name).errors.description || 'Campo requerido' }}
       </div>
     </span>
   `,
@@ -31,15 +41,29 @@ import { InputGeneralService } from './input-general.service';
 })
 export class InputGeneralComponent implements OnInit {
   @Input() control;
-  @Input() form;
+  @Input() form: FormGroup;
   estilos;
-  constructor(private service: InputGeneralService) {}
+
+  constructor(
+    private service: InputGeneralService,
+    private callToService: AsyncValService
+  ) {}
 
   ngOnInit() {
     if (this.control) {
-      const { style } = this.control;
+      const {
+        attributes: { style }
+      } = this.control;
       this.estilos = style ? this.service.stringToObj(style) : {};
-      console.log('this.estilos', this.estilos);
+      this.form
+        .get(this.control.name)
+        .valueChanges.pipe(
+          distinctUntilChanged(),
+          debounceTime(1000),
+          filter(_ => this.form.get(this.control.name).valid),
+          switchMap(val => this.callToService.asynCallToService())
+        )
+        .subscribe(val => console.log('subs valueChanges', val));
     }
   }
 }

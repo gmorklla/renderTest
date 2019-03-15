@@ -21,14 +21,32 @@ export class VentanaDinamicaComponent implements OnInit {
   payLoad = '';
   controls: InputBase<any>[] = [
     new TextInput({
-      key: 'email',
-      label: 'First name',
-      value: 'Bombasto',
-      required: true,
-      order: 1,
-      min: 10,
-      style:
-        'position:absolute;width:100px;height:30px;transform:translate3d(200px,100px,0px);padding-left:25px;box-sizing:border-box;'
+      id: 733,
+      name: 'text_733',
+      type: 'number',
+      attributes: {
+        style:
+          'position:absolute;transform:translate3d(241px,82px,0px);width:149px;height:55px;',
+        validations: [
+          {
+            name: 'required',
+            type: 'sync',
+            val: null
+          },
+          {
+            name: 'email',
+            type: 'sync',
+            val: null
+          },
+          {
+            name: 'checkEmail',
+            type: 'async',
+            val: null
+          }
+        ]
+      },
+      options: null,
+      tag: 'input'
     })
   ];
 

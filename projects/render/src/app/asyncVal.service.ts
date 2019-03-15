@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, map, delay } from 'rxjs/operators';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { of } from 'rxjs';
 
 export interface UserI {
   name: string;
@@ -11,11 +12,27 @@ export interface UserI {
 export class AsyncValService {
   constructor(private http: HttpClient) {}
 
-  checkEmailNotTaken(email: string) {
+  checkEmailNotTaken(email) {
     return this.http.get('assets/users.json').pipe(
-      debounceTime(1000),
-      map((users: Array<UserI>) => users.filter(user => user.email === email)),
-      map(users => !users.length)
+      delay(1000),
+      map((users: Array<UserI>) =>
+        users.filter(user => user.email === email.value)
+      ),
+      map(users => !users.length),
+      map(res =>
+        res ? null : { emailTaken: true, description: 'Email ya registrado' }
+      )
     );
+  }
+
+  validCard(card: number) {
+    return of(Math.round(Math.random())).pipe(
+      delay(1000),
+      map(res => (res ? null : { invalidCard: true }))
+    );
+  }
+
+  asynCallToService() {
+    return this.http.get('assets/users.json');
   }
 }
