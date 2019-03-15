@@ -23,7 +23,7 @@ export class VentanaDinamicaComponent implements OnInit {
     new TextInput({
       id: 733,
       name: 'text_733',
-      type: 'number',
+      type: 'text',
       attributes: {
         style:
           'position:absolute;transform:translate3d(241px,82px,0px);width:149px;height:55px;',
