@@ -4,17 +4,15 @@ import {
   debounceTime,
   distinctUntilChanged,
   switchMap,
-  filter,
-  tap
+  filter
 } from 'rxjs/operators';
-import { of } from 'rxjs';
 import { InputGeneralService } from './input-general.service';
 import { AsyncValService } from './../../../render/src/app/asyncVal.service';
 
 @Component({
   selector: 'lib-inputGeneral',
   template: `
-    <span [formGroup]="form">
+    <form [formGroup]="form">
       <input
         [ngStyle]="estilos"
         [formControlName]="control.name"
@@ -35,7 +33,7 @@ import { AsyncValService } from './../../../render/src/app/asyncVal.service';
         😢
         {{ form.get(control.name).errors.description || 'Campo requerido' }}
       </div>
-    </span>
+    </form>
   `,
   styleUrls: ['./input-general.component.css']
 })
@@ -60,7 +58,8 @@ export class InputGeneralComponent implements OnInit {
         .valueChanges.pipe(
           distinctUntilChanged(),
           debounceTime(1000),
-          filter(_ => this.form.get(this.control.name).valid),
+          switchMap(_ => this.form.get(this.control.name).statusChanges),
+          filter(val => val === 'VALID'),
           switchMap(val => this.callToService.asynCallToService())
         )
         .subscribe(val => console.log('subs valueChanges', val));

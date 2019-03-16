@@ -20,7 +20,7 @@ export class VentanaDinamicaComponent implements OnInit {
   form: FormGroup;
   payLoad = '';
   controls: InputBase<any>[] = [
-    new TextInput({
+    new InputBase({
       id: 733,
       name: 'text_733',
       type: 'text',
@@ -42,6 +42,29 @@ export class VentanaDinamicaComponent implements OnInit {
             name: 'checkEmail',
             type: 'async',
             val: null
+          }
+        ]
+      },
+      options: null,
+      tag: 'input'
+    }),
+    new InputBase({
+      id: 734,
+      name: 'number_734',
+      type: 'number',
+      attributes: {
+        style:
+          'position:absolute;transform:translate3d(241px,200px,0px);width:149px;height:55px;',
+        validations: [
+          {
+            name: 'required',
+            type: 'sync',
+            val: null
+          },
+          {
+            name: 'pattern',
+            type: 'sync',
+            val: /^(?:4[0-9]{12}(?:[0-9]{3})?)$/
           }
         ]
       },
