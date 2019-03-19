@@ -7,7 +7,21 @@ import {
   filter
 } from 'rxjs/operators';
 import { InputGeneralService } from './input-general.service';
-import { AsyncValService } from './../../../render/src/app/asyncVal.service';
+import { AsyncValService } from 'projects/render/src/app/asyncVal.service';
+
+// <div * ngIf="form.get(control.name).status === 'PENDING'" >
+//   Verificando...
+// </div>
+//   < div * ngIf="form.get(control.name).status === 'VALID'" >
+// 😺 Campo válido!
+//   < /div>
+
+//   < div
+//   * ngIf="form.get(control.name).errors && form.get(control.name).touched"
+//     >
+// 😢
+// { { form.get(control.name).errors.description || 'Campo requerido' } }
+// </div>
 
 @Component({
   selector: 'lib-inputGeneral',
@@ -19,20 +33,11 @@ import { AsyncValService } from './../../../render/src/app/asyncVal.service';
         [id]="control.id"
         [type]="control.type"
       />
-      <i class="far fa-envelope"></i>
-      <div *ngIf="form.get(control.name).status === 'PENDING'">
-        Verificando...
-      </div>
-      <div *ngIf="form.get(control.name).status === 'VALID'">
-        😺 Campo válido!
-      </div>
-
-      <div
-        *ngIf="form.get(control.name).errors && form.get(control.name).touched"
-      >
-        😢
-        {{ form.get(control.name).errors.description || 'Campo requerido' }}
-      </div>
+      <i
+        *ngIf="control.attributes.icon"
+        class="{{ control.attributes.icon }}"
+        [ngStyle]="{ position: 'absolute', transform: estilos.transform }"
+      ></i>
     </form>
   `,
   styleUrls: ['./input-general.component.css']

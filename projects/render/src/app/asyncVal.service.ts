@@ -19,9 +19,7 @@ export class AsyncValService {
         users.filter(user => user.email === email.value)
       ),
       map(users => !users.length),
-      map(res =>
-        res ? null : { emailTaken: true, description: 'Email ya registrado' }
-      )
+      map(res => (res ? null : { duplicate: 'Email ya registrado' }))
     );
   }
 

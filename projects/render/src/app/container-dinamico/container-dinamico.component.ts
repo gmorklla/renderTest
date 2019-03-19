@@ -1,3 +1,4 @@
+import { ControlI } from './../controlI';
 import {
   Component,
   OnInit,
@@ -7,6 +8,7 @@ import {
   Input
 } from '@angular/core';
 import { InputGeneralComponent } from 'projects/input-general/src/public_api';
+import { ButtonLibComponent } from 'projects/button-lib/src/public_api';
 import { FormGroup } from '@angular/forms';
 import { InputBase } from '../input-base';
 
@@ -18,8 +20,15 @@ import { InputBase } from '../input-base';
 export class ContainerDinamicoComponent implements OnInit {
   @ViewChild('container', { read: ViewContainerRef })
   container: ViewContainerRef;
-  @Input() control: InputBase<any>;
+  @Input() control: InputBase<any> | ControlI;
   @Input() form: FormGroup;
+  componentMap = {
+    text: InputGeneralComponent,
+    number: InputGeneralComponent,
+    email: InputGeneralComponent,
+    password: InputGeneralComponent,
+    button: ButtonLibComponent
+  };
 
   constructor(private resolver: ComponentFactoryResolver) {}
 
@@ -28,7 +37,7 @@ export class ContainerDinamicoComponent implements OnInit {
   }
 
   createComponent() {
-    const componentToRender = InputGeneralComponent;
+    const componentToRender = this.componentMap[this.control.type];
     this.container.clear();
     const factory = this.resolver.resolveComponentFactory(componentToRender);
     const componentRef = this.container.createComponent(factory);

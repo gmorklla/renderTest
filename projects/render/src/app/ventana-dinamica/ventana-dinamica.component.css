@@ -6,3 +6,23 @@
   max-height: 100%;
   position: relative;
 }
+
+.validationErrors {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.validationErrors span {
+  width: 100%;
+  height: auto;
+  background-color: tomato;
+  padding: 5px;
+  overflow: hidden;
+  border-top: 1px dotted white;
+}

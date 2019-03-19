@@ -23,6 +23,12 @@
       ],
       "inputGeneral/*": [
         "dist/input-general/*"
+      ],
+      "buttonLib": [
+        "dist/button-lib"
+      ],
+      "buttonLib/*": [
+        "dist/button-lib/*"
       ]
     }
   }

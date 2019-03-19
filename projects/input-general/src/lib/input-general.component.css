@@ -1,10 +1,11 @@
 i {
   position: absolute;
-  transform: translate3d(205px, 106px, 0px);
+  transform: translate3d(155px, 100px, 0px);
 }
 
 input {
   background: aliceblue;
+  box-sizing: border-box;
 }
 
 input.ng-valid.ng-touched {
@@ -17,11 +18,11 @@ input.ng-invalid.ng-touched {
   background-color: rgb(255, 244, 244);
 }
 
-.ng-invalid.ng-touched i {
+.ng-invalid.ng-touched+i {
   color: crimson;
 }
 
-.ng-valid.ng-touched i {
+.ng-valid.ng-touched+i {
   color: green;
 }
 

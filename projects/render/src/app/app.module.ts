@@ -9,6 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AppComponent } from './app.component';
 import { VentanaDinamicaComponent } from './ventana-dinamica/ventana-dinamica.component';
 import { InputGeneralModule } from 'projects/input-general/src/public_api';
+import { ButtonLibModule } from 'projects/button-lib/src/public_api';
 import { ContainerDinamicoComponent } from './container-dinamico/container-dinamico.component';
 import { AsyncValService } from './asyncVal.service';
 
@@ -25,6 +26,7 @@ import { AsyncValService } from './asyncVal.service';
     MatButtonModule,
     MatDialogModule,
     InputGeneralModule,
+    ButtonLibModule,
     HttpClientModule
   ],
   providers: [AsyncValService],
