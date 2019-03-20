@@ -1,5 +1,5 @@
 import { ButtonLibService } from './button-lib.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AsyncValService } from 'projects/render/src/app/asyncVal.service';
 
@@ -17,6 +17,7 @@ import { AsyncValService } from 'projects/render/src/app/asyncVal.service';
 export class ButtonLibComponent implements OnInit {
   @Input() control;
   @Input() form: FormGroup;
+  @Output() varChange = new EventEmitter();
   estilos;
 
   constructor(
@@ -35,7 +36,7 @@ export class ButtonLibComponent implements OnInit {
 
   onSubmit() {
     this.callToService
-      .asynCallToService()
+      .asynCallToService('assets/users.json')
       .subscribe(val => console.log('asyncCall on submit', val));
   }
 }

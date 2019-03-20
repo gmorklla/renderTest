@@ -30,7 +30,7 @@ export class AsyncValService {
     );
   }
 
-  asynCallToService() {
-    return this.http.get('assets/users.json');
+  asynCallToService(url: string) {
+    return this.http.get(url);
   }
 }

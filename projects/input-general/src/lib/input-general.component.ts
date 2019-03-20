@@ -1,5 +1,5 @@
 import { FormGroup } from '@angular/forms';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -45,6 +45,7 @@ import { AsyncValService } from 'projects/render/src/app/asyncVal.service';
 export class InputGeneralComponent implements OnInit {
   @Input() control;
   @Input() form: FormGroup;
+  @Output() varChange = new EventEmitter();
   estilos;
 
   constructor(
@@ -65,7 +66,9 @@ export class InputGeneralComponent implements OnInit {
           debounceTime(1000),
           switchMap(_ => this.form.get(this.control.name).statusChanges),
           filter(val => val === 'VALID'),
-          switchMap(val => this.callToService.asynCallToService())
+          switchMap(val =>
+            this.callToService.asynCallToService('assets/users.json')
+          )
         )
         .subscribe(val => console.log('subs valueChanges', val));
     }

@@ -11,6 +11,14 @@ import { InputGeneralComponent } from 'projects/input-general/src/public_api';
 import { ButtonLibComponent } from 'projects/button-lib/src/public_api';
 import { FormGroup } from '@angular/forms';
 import { InputBase } from '../input-base';
+import { RangeLibComponent } from 'projects/range-lib/src/public_api';
+import { DivLibComponent } from 'projects/div-lib/src/public_api';
+import { EventEmitterService } from '../event-emitter.service';
+
+export interface VarChange {
+  id: number;
+  msg: string;
+}
 
 @Component({
   selector: 'app-container-dinamico',
@@ -27,10 +35,15 @@ export class ContainerDinamicoComponent implements OnInit {
     number: InputGeneralComponent,
     email: InputGeneralComponent,
     password: InputGeneralComponent,
-    button: ButtonLibComponent
+    button: ButtonLibComponent,
+    range: RangeLibComponent,
+    div: DivLibComponent
   };
 
-  constructor(private resolver: ComponentFactoryResolver) {}
+  constructor(
+    private resolver: ComponentFactoryResolver,
+    private emitterS: EventEmitterService
+  ) {}
 
   ngOnInit() {
     this.createComponent();
@@ -43,5 +56,9 @@ export class ContainerDinamicoComponent implements OnInit {
     const componentRef = this.container.createComponent(factory);
     componentRef.instance['control'] = this.control;
     componentRef.instance['form'] = this.form;
+    // drag end event
+    componentRef.instance['varChange'].subscribe((val: VarChange[]) =>
+      this.emitterS.varChange.next(val)
+    );
   }
 }

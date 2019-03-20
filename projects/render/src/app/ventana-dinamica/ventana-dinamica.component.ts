@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, ValidationErrors } from '@angular/forms';
 import { InputBase } from '../input-base';
 import { InputControlService } from '../input-control.service';
+import { EventEmitterService } from '../event-emitter.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 export interface DialogData {
@@ -13,6 +14,11 @@ export interface AllValidationErrors {
   control_name: string;
   error_name: string;
   error_value: any;
+}
+
+export interface VarChange {
+  id: number;
+  msg: string;
 }
 
 @Component({
@@ -32,7 +38,7 @@ export class VentanaDinamicaComponent implements OnInit {
       type: 'text',
       attributes: {
         style:
-          'position:absolute;transform:translate3d(180px,80px,0px);width:149px;height:50px;',
+          'position:absolute;transform:translate3d(180px,80px,0px);width:149px;height:50px;font-family:serif;',
         icon: 'far fa-envelope',
         validations: [
           {
@@ -79,33 +85,62 @@ export class VentanaDinamicaComponent implements OnInit {
       options: null,
       tag: 'input'
     }),
+    new InputBase({
+      id: 736,
+      name: 'range_736',
+      type: 'range',
+      attributes: {
+        style:
+          'position:absolute;transform:translate3d(180px,200px,0px);width:149px;height:50px;',
+        icon: 'far fa-credit-card',
+        validations: []
+      },
+      options: null,
+      tag: 'input'
+    }),
     {
       id: 735,
       name: 'button_735',
       type: 'button',
       attributes: {
         style:
-          'position:absolute;transform:translate3d(180px,200px,0px);width:149px;height:50px;',
+          'position:absolute;transform:translate3d(180px,260px,0px);width:149px;height:50px;',
         value: 'Botón',
         validations: []
       },
       options: null,
       tag: 'input'
+    },
+    {
+      id: 737,
+      name: 'div_737',
+      type: 'div',
+      attributes: {
+        style:
+          'position:absolute;transform:translate3d(180px,320px,0px);width:149px;height:50px;',
+        value: 'Un mensaje en div',
+        validations: []
+      },
+      options: null,
+      tag: 'div'
     }
   ];
 
   constructor(
     public dialogRef: MatDialogRef<VentanaDinamicaComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private ics: InputControlService
+    private ics: InputControlService,
+    private emitterS: EventEmitterService
   ) {}
 
   ngOnInit() {
     this.form = this.ics.toFormGroup(this.controls);
     this.form.statusChanges.subscribe(val => {
       this.validationEList = this.getValidationErrors();
-      console.log('validationsErrors', val, this.validationEList);
     });
+    this.emitterS.varChange.subscribe((varChange: VarChange[]) =>
+      this.updateCtrls(varChange)
+    );
   }
 
   onNoClick(): void {
@@ -128,5 +163,14 @@ export class VentanaDinamicaComponent implements OnInit {
       }
     });
     return errors;
+  }
+
+  updateCtrls(changes: VarChange[]) {
+    const clone = JSON.parse(JSON.stringify(this.controls));
+    changes.forEach(change => {
+      const toUpdate = clone.filter(ctrl => change.id === ctrl.id);
+      toUpdate[0].attributes.value = change.msg;
+    });
+    this.controls = clone;
   }
 }
