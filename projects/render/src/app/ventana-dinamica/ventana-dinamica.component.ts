@@ -4,6 +4,7 @@ import { InputBase } from '../input-base';
 import { InputControlService } from '../input-control.service';
 import { TextInput } from '../input-text';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { GridsterConfig } from 'angular-gridster2';
 
 export interface DialogData {
   animal: string;
@@ -27,10 +28,11 @@ export class VentanaDinamicaComponent implements OnInit {
       required: true,
       order: 1,
       min: 10,
-      style:
-        'position:absolute;width:100px;height:30px;transform:translate3d(200px,100px,0px);padding-left:25px;box-sizing:border-box;'
+      attributes: {},
+      style: ''
     })
   ];
+  options: GridsterConfig;
 
   constructor(
     public dialogRef: MatDialogRef<VentanaDinamicaComponent>,
@@ -40,6 +42,34 @@ export class VentanaDinamicaComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.ics.toFormGroup(this.controls);
+    this.options = {
+      minRows: 10,
+      minItemArea: 1,
+      pushItems: true,
+      draggableEnabled: true,
+      draggabledropOverItems: true,
+      resizableEnabled: true,
+      margin: 5,
+      maxCols: 12,
+      maxItemArea: 2500,
+      maxItemCols: 100,
+      maxItemRows: 100,
+      maxRows: 12,
+      minCols: 10,
+      minItemCols: 1,
+      minItemRows: 1,
+      swap: false,
+      fixedRowHeight: 30,
+      keepFixedHeightInMobile: true,
+      displayGrid: 'always',
+      outerMargin: true,
+      outerMarginTop: 5,
+      outerMarginRight: 5,
+      outerMarginBottom: 5,
+      outerMarginLeft: 5,
+      gridType: 'fit',
+      mobileBreakpoint: 100
+    };
   }
 
   onNoClick(): void {

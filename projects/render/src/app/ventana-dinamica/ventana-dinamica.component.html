@@ -7,13 +7,19 @@
     (ngSubmit)="onSubmit()"
     [formGroup]="form"
     novalidate
+    style="width: 100%; height: 90%;"
   >
-    <ng-container *ngFor="let control of controls; let i = index; trackBy: index">
-      <app-container-dinamico
-        [control]="control"
-        [form]="form"
-      ></app-container-dinamico>
-    </ng-container>
+    <gridster [options]="options">
+      <gridster-item
+        [item]="control | ctrlToGridster"
+        *ngFor="let control of controls;"
+      >
+        <app-container-dinamico
+          [control]="control"
+          [form]="form"
+        ></app-container-dinamico>
+      </gridster-item>
+    </gridster>
     <button
       type="submit"
       [disabled]="!form.valid"
