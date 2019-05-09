@@ -4,7 +4,6 @@
   style="background-color: azure;"
 >
   <form
-    (ngSubmit)="onSubmit()"
     [formGroup]="form"
     novalidate
     style="width: 100%; height: 90%;"
@@ -25,10 +24,7 @@
       [disabled]="!form.valid"
     >Save</button>
   </form>
-  <div
-    *ngIf="payLoad"
-    class="form-row"
-  >
-    <strong>Saved the following values</strong><br>{{payLoad}}
+  <div class="validationErrors">
+    <span *ngFor="let error of validationEList">{{error | json}}</span>
   </div>
 </div>

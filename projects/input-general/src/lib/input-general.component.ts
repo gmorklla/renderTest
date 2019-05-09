@@ -1,45 +1,76 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  filter
+} from 'rxjs/operators';
 import { InputGeneralService } from './input-general.service';
+import { AsyncValService } from 'projects/render/src/app/asyncVal.service';
+
+// <div * ngIf="form.get(control.name).status === 'PENDING'" >
+//   Verificando...
+// </div>
+//   < div * ngIf="form.get(control.name).status === 'VALID'" >
+// 😺 Campo válido!
+//   < /div>
+
+//   < div
+//   * ngIf="form.get(control.name).errors && form.get(control.name).touched"
+//     >
+// 😢
+// { { form.get(control.name).errors.description || 'Campo requerido' } }
+// </div>
 
 @Component({
   selector: 'lib-inputGeneral',
   template: `
-    <span [formGroup]="form">
+    <form [formGroup]="form">
       <input
-        type="text"
         [ngStyle]="estilos"
-        [formControlName]="control.key"
-        [id]="control.key"
+        [formControlName]="control.name"
+        [id]="control.id"
         [type]="control.type"
       />
-      <i class="far fa-credit-card"></i>
-      <div *ngIf="form.get('email').status === 'PENDING'">
-        Checking...
-      </div>
-      <div *ngIf="form.get('email').status === 'VALID'">
-        😺 Email is available!
-      </div>
-
-      <div
-        *ngIf="form.get('email').errors && form.get('email').errors.emailTaken"
-      >
-        😢 Oh noes, this email is already taken!
-      </div>
-    </span>
+      <i
+        *ngIf="control.attributes.icon"
+        class="{{ control.attributes.icon }}"
+        [ngStyle]="{ position: 'absolute', transform: estilos.transform }"
+      ></i>
+    </form>
   `,
   styleUrls: ['./input-general.component.css']
 })
 export class InputGeneralComponent implements OnInit {
   @Input() control;
-  @Input() form;
+  @Input() form: FormGroup;
+  @Output() varChange = new EventEmitter();
   estilos;
-  constructor(private service: InputGeneralService) {}
+
+  constructor(
+    private service: InputGeneralService,
+    private callToService: AsyncValService
+  ) {}
 
   ngOnInit() {
     if (this.control) {
-      const { style } = this.control;
+      const {
+        attributes: { style }
+      } = this.control;
       this.estilos = style ? this.service.stringToObj(style) : {};
-      console.log('this.estilos', this.estilos);
+      this.form
+        .get(this.control.name)
+        .valueChanges.pipe(
+          distinctUntilChanged(),
+          debounceTime(1000),
+          switchMap(_ => this.form.get(this.control.name).statusChanges),
+          filter(val => val === 'VALID'),
+          switchMap(val =>
+            this.callToService.asynCallToService('assets/users.json')
+          )
+        )
+        .subscribe(val => console.log('subs valueChanges', val));
     }
   }
 }

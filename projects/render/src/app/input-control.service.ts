@@ -1,20 +1,24 @@
 import { Injectable } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-  AbstractControl
-} from '@angular/forms';
-import { map } from 'rxjs/operators';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AsyncValService } from './asyncVal.service';
-
 import { InputBase } from './input-base';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class InputControlService {
-  validatorsMap = {
+  syncValidatorsMap = {
     required: Validators.required,
-    min: (num: number) => Validators.minLength(num)
+    min: (num: number) => Validators.min(num),
+    max: (num: number) => Validators.min(num),
+    minL: (num: number) => Validators.minLength(num),
+    maxL: (num: number) => Validators.maxLength(num),
+    email: Validators.email,
+    pattern: (pattern: string | RegExp) => Validators.pattern(pattern)
+  };
+
+  asyncValidatorsMap = {
+    checkEmail: email => this.asyncV.checkEmailNotTaken(email),
+    validCard: card => this.asyncV.validCard(card)
   };
 
   constructor(private asyncV: AsyncValService) {}
@@ -23,20 +27,38 @@ export class InputControlService {
     const group: any = {};
 
     inputs.forEach(input => {
-      group[input.key] = input.required
-        ? new FormControl(
-            input.value || '',
-            [this.validatorsMap.required, this.validatorsMap.min(input.min)],
-            this.asyncValidation.bind(this)
-          )
-        : new FormControl(input.value || '');
+      // Obtener validadores síncronos
+      const syncValidators = this.getSyncValidators(input);
+      // Obtener validadores asíncronos
+      const asyncValidators = this.getAsyncValidators(input).map(fn =>
+        fn.bind(this)
+      );
+      group[input.name] = new FormControl(
+        input.attributes.value || '',
+        syncValidators,
+        asyncValidators
+      );
     });
     return new FormGroup(group);
   }
 
-  asyncValidation(control: AbstractControl) {
-    return this.asyncV
-      .checkEmailNotTaken(control.value)
-      .pipe(map(res => (res ? null : { emailTaken: true })));
+  getSyncValidators(input) {
+    return input.attributes.validations
+      .filter(validator => validator.type === 'sync')
+      .map(validator => {
+        const fn = this.syncValidatorsMap[validator.name];
+        const vToValidate = validator.val;
+        return vToValidate ? fn(vToValidate) : fn;
+      });
+  }
+
+  getAsyncValidators(input) {
+    return input.attributes.validations
+      .filter(validator => validator.type === 'async')
+      .map(validator => this.asyncValidatorsMap[validator.name]);
+  }
+
+  getChangeObserver(formControl: FormControl): Observable<any> {
+    return formControl.valueChanges;
   }
 }

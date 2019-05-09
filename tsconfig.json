@@ -23,6 +23,24 @@
       ],
       "inputGeneral/*": [
         "dist/input-general/*"
+      ],
+      "buttonLib": [
+        "dist/button-lib"
+      ],
+      "buttonLib/*": [
+        "dist/button-lib/*"
+      ],
+      "rangeLib": [
+        "dist/range-lib"
+      ],
+      "rangeLib/*": [
+        "dist/range-lib/*"
+      ],
+      "divLib": [
+        "dist/div-lib"
+      ],
+      "divLib/*": [
+        "dist/div-lib/*"
       ]
     }
   }

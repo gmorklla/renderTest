@@ -277,6 +277,111 @@
           }
         }
       }
+    },
+    "buttonLib": {
+      "root": "projects/button-lib",
+      "sourceRoot": "projects/button-lib/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/button-lib/tsconfig.lib.json",
+            "project": "projects/button-lib/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/button-lib/src/test.ts",
+            "tsConfig": "projects/button-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/button-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/button-lib/tsconfig.lib.json",
+              "projects/button-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "rangeLib": {
+      "root": "projects/range-lib",
+      "sourceRoot": "projects/range-lib/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/range-lib/tsconfig.lib.json",
+            "project": "projects/range-lib/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/range-lib/src/test.ts",
+            "tsConfig": "projects/range-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/range-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/range-lib/tsconfig.lib.json",
+              "projects/range-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "divLib": {
+      "root": "projects/div-lib",
+      "sourceRoot": "projects/div-lib/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/div-lib/tsconfig.lib.json",
+            "project": "projects/div-lib/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/div-lib/src/test.ts",
+            "tsConfig": "projects/div-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/div-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/div-lib/tsconfig.lib.json",
+              "projects/div-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "renderTest"

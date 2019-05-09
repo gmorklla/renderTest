@@ -1,32 +1,26 @@
 export class InputBase<T> {
-  value: T;
-  key: string;
-  label: string;
-  required: boolean;
-  order: number;
-  min: number;
-  controlType: string;
-  style: string;
+  id: number;
+  name: string;
+  type: string;
+  attributes: { [key: string]: any };
+  options?: Array<any>;
+  tag: string;
 
   constructor(
     options: {
-      value?: T;
-      key?: string;
-      label?: string;
-      required?: boolean;
-      order?: number;
-      min?: number;
-      controlType?: string;
-      style?: string;
+      id?: number;
+      name?: string;
+      type?: string;
+      attributes?: { [key: string]: any };
+      options?: Array<any>;
+      tag?: string;
     } = {}
   ) {
-    this.value = options.value;
-    this.key = options.key || '';
-    this.label = options.label || '';
-    this.required = !!options.required;
-    this.order = options.order === undefined ? 1 : options.order;
-    this.min = options.min === undefined ? 5 : options.min;
-    this.controlType = options.controlType || '';
-    this.style = options.style;
+    this.id = options.id;
+    this.name = options.name;
+    this.type = options.type;
+    this.attributes = options.attributes;
+    this.options = options.options;
+    this.tag = options.tag;
   }
 }
